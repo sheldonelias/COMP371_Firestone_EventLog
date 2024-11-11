@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.AggregateQuery;
+import com.google.firebase.firestore.AggregateQuerySnapshot;
+import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,8 +43,6 @@ public class RecyclerEventLog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_event_log);
 
-
-
         recyclerView = findViewById(R.id.recycler_view);
 
         recyclerView.setHasFixedSize(true);
@@ -50,6 +51,9 @@ public class RecyclerEventLog extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ffDB = FirebaseFirestore.getInstance();
+
+
+
 
         eventList = new ArrayList<>();
 
@@ -60,20 +64,17 @@ public class RecyclerEventLog extends AppCompatActivity {
         recyclerView.setAdapter(eventAdapter);
 
         readEventsFromDatabase();
-
     }
 
 
 
     private void readEventsFromDatabase()
     {
-        ffDB.collection("EventLog")  //orderBy("event_count", Query.Direction.ASCENDING)
-                //.get()
-                //.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>()
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+        ffDB.collection("EventLog").orderBy("date", Query.Direction.DESCENDING)
+                .addSnapshotListener(new EventListener<QuerySnapshot>()
+                {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
 
                         if(error != null)
                         {
@@ -86,114 +87,16 @@ public class RecyclerEventLog extends AppCompatActivity {
 
                             if(dc.getType() == DocumentChange.Type.ADDED)
                             {
-                                System.out.println("SOMETHING: " + dc.getDocument().toObject(EventModel.class));
-
-
+                                //System.out.println("SOMETHING: " + dc.getDocument().toObject(EventModel.class));
 
                                 eventList.add(dc.getDocument().toObject(EventModel.class));
                             }
-
-
                         }
 
                         eventAdapter.notifyDataSetChanged();
 
-
                     }
                 });
-
-
-                /*{
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task)
-                    {
-                        //System.out.println("readEventsFromDatabase() activated");
-
-                        if (task.isSuccessful())
-                        {
-                            for (QueryDocumentSnapshot document : task.getResult())
-                            {
-
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                //System.out.println(document.getData().get("event_count"));
-
-                                EventModel event = new EventModel();
-
-                                event.setEventCount(Integer.parseInt(document.getData().get("event_count").toString()));
-
-                                event.setDate(document.getData().get("date").toString());
-
-                                event.setTime(Float.parseFloat(document.getData().get("time").toString()));
-
-                                event.setType(document.getData().get("type").toString());
-
-                                event.setDescription(document.getData().get("description").toString());
-
-                                eventList.add(event);
-
-                                System.out.println("DESCRIPTION: " + event.description);
-
-
-                            }
-
-
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                            System.out.println("Error getting documents." + task.getException());
-                        }
-
-                        System.out.println("Success getting documents");
-                        System.out.println("Inside readEventsFromDatabase SIZE: " + eventList.size());
-
-
-                    }
-                });
-                */
-
-        //System.out.println("After readEventsFromDatabase SIZE: " + eventList.size());
-
-
-
-
-
-
     }
 }
 
-
-
-
-
-/*{
-        @Override
-        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-            if(error != null)
-            {
-                *//*if(progressDialog.isShowing())
-                {
-                    progressDialog.dismiss();
-                }*//*
-
-                Log.e("Firestore boo boo.", error.getMessage());
-                Toast.makeText(getApplicationContext(), "Firestore boo boo.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            for(DocumentChange dc: value.getDocumentChanges())
-            {
-                if(dc.getType() == DocumentChange.Type.ADDED)
-                {
-                    eventList.add(dc.getDocument().toObject(EventModel.class));
-                }
-            }
-
-            eventAdapter.notifyDataSetChanged();
-
-            *//*if(progressDialog.isShowing())
-            {
-                progressDialog.dismiss();
-            }*//*
-
-        }*/
