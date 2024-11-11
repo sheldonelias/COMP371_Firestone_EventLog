@@ -2,8 +2,10 @@ package com.example.firestone_eventlog;
 
 public class EventModel
 {
+
+
     //Instance Variables
-    //int eventCount;
+    String eventCount;
     String date;
     String time;
     String type;
@@ -12,9 +14,9 @@ public class EventModel
 
     EventModel() {}
 
-    EventModel(String date, String time, String type, String description)
+    EventModel(String eventCount, String date, String time, String type, String description)
     {
-        //this.eventCount = eventCount;
+        this.eventCount = eventCount;
         this.date = date;
         this.time = time;
         this.type = type;
@@ -22,14 +24,14 @@ public class EventModel
     }
 
 
-   /* public int getEventCount() {
+    public String getEventCount() {
         return eventCount;
     }
 
-    public void setEventCount(int event_count) {
-        this.eventCount = event_count;
+    public void setEventCount(String eventCount) {
+        this.eventCount = eventCount;
     }
-*/    public String getDate() {
+    public String getDate() {
         return date;
     }
 
