@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631317127075",
+    "project_id": "firestone-eventlog",
+    "storage_bucket": "firestone-eventlog.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631317127075:android:7348db0cc6615fddcc4416",
+        "android_client_info": {
+          "package_name": "com.example.firestone_eventlog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEtXQmEdOgPRqmYJBrIj6P1ZrDYTme-EU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
