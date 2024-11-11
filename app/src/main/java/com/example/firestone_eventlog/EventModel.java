@@ -27,7 +27,6 @@ public class EventModel
     public String getEventCount() {
         return eventCount;
     }
-
     public void setEventCount(String eventCount) {
         this.eventCount = eventCount;
     }

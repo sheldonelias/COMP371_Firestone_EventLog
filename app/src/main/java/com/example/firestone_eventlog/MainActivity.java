@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    //View variables declared
+    //View type variables declared
     String eventNumber;
     EditText eventDate;
     EditText eventTime;
@@ -48,36 +48,41 @@ public class MainActivity extends AppCompatActivity {
     Button recordButton;
 
 
+    //Database variables declared
     FirebaseFirestore ffDB;
-
     Query query;
 
 
-
+    //Lifecycle method to start the Activity
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Instantiating an instance of the database referenced in google-services.json
         ffDB = FirebaseFirestore.getInstance();
-
+        //Sending the current version of database to Query type
         query = ffDB.collection("EventLog");
-
+        //Transfering data to a special query, a count of how many records so as to give a number
         AggregateQuery countQuery = query.count();
-
+        //Performing query
         countQuery.get(AggregateSource.SERVER).addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    // Count fetched successfully
+                    // Count query fetched successfully
                     AggregateQuerySnapshot snapshot = task.getResult();
-                    System.out.println("Count: " + snapshot.getCount());
+                    Log.d(TAG, "Count suceeded: ");
+                    //System.out.println("Count: " + snapshot.getCount());
 
+                    //Passes the current number of records + 1.
                     eventNumber = Long.toString(snapshot.getCount() + 1);
 
                 } else {
+                    //Fail reporting count query.
                     System.out.println("Count failed: " + task.getException());
+                    Log.d(TAG, "Count failed: ", task.getException());
                 }
             }
         });
@@ -116,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         Map<String, Object> event = new HashMap<>();
         event.put("date", eventDate.getText().toString());
         event.put("description", eventDescription.getText().toString());
-        event.put("number", eventNumber);
+        event.put("eventCount", eventNumber);
         event.put("time", eventTime.getText().toString());
         event.put("type", eventType.getText().toString());
 

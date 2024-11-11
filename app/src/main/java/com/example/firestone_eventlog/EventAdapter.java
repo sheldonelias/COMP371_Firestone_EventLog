@@ -35,18 +35,17 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>
     {
         EventModel event = eventList.get(position);
 
+
+        holder.countView.setText(event.eventCount);
         holder.dateView.setText(event.date);
         holder.timeView.setText(event.time);
         holder.typeView.setText(event.type);
         holder.descriptionView.setText(event.description);
-
     }
 
     @Override
     public int getItemCount() {
         return eventList.size();
     }
-
-
 
 }
